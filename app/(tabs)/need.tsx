@@ -1,207 +1,183 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Button } from '~/components/ui/button';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getLocation } from '~/utils/locationUtils'; // Assuming you have locationUtils for fetching user location
+import { app } from '~/firebaseConfig'; // Import Firebase app
 
 export default function Need() {
   const [selectedPint, setSelectedPint] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedBloodGroup, setSelectedBloodGroup] = useState(null);
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [patientName, setPatientName] = useState('');
+  const [hospitalName, setHospitalName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const db = getFirestore(app); // Initialize Firestore
+
+  const handleSubmit = async () => {
+    if (!patientName || !selectedBloodGroup || !selectedPint || !selectedDate || !hospitalName || !phoneNumber) {
+      Alert.alert('Error', 'Please fill all required fields.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const userLocation = await getLocation(); // Fetch user's location
+      if (!userLocation) {
+        Alert.alert('Error', 'Unable to fetch your location.');
+        return;
+      }
+
+      const newRequest = {
+        patientName,
+        bloodGroup: selectedBloodGroup,
+        pint: selectedPint,
+        requiredBy: selectedDate.toISOString(),
+        hospital: hospitalName,
+        phoneNumber: `+977${phoneNumber}`,
+        location: {
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+        },
+        createdAt: new Date().toISOString(),
+      };
+
+      await addDoc(collection(db, 'donationRequests'), newRequest); // Save to Firestore
+
+      Alert.alert('Success', 'Donation request submitted successfully.');
+      // Optionally reset form fields
+      setPatientName('');
+      setSelectedBloodGroup(null);
+      setSelectedPint(null);
+      setSelectedDate(null);
+      setHospitalName('');
+      setPhoneNumber('');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to submit donation request. Please try again.');
+      console.error('Error submitting donation request:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleConfirm = (date: Date) => {
     setSelectedDate(date);
     setDatePickerVisibility(false);
   };
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
+
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
+
   const handlePhoneChange = (text: string) => {
     const formatted = text.replace(/[^0-9]/g, '');
     if (formatted.length <= 7) {
       setPhoneNumber(formatted);
     }
   };
+
   const handleBloodGroupClick = (bloodGroup: string) => {
     setSelectedBloodGroup(bloodGroup);
   };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.heading}>Patient Name</Text>
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="bg-white rounded-lg p-5 shadow-md">
+        <Text className="text-lg font-bold mb-2 text-gray-800">Patient Name</Text>
         <TextInput
-          style={styles.input}
+          className="bg-gray-100 p-3 rounded-md mb-5 text-gray-700"
+          placeholder="Enter patient name"
           placeholderTextColor="#999"
+          value={patientName}
+          onChangeText={setPatientName}
         />
-        <Text style={styles.heading}>Blood Group</Text>
-        <View style={styles.bloodGroupContainer}>
-          {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bloodGroup => (
+
+        <Text className="text-lg font-bold mb-2 text-gray-800">Blood Group</Text>
+        <View className="flex flex-row flex-wrap gap-2 mb-5">
+          {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map((bloodGroup) => (
             <TouchableOpacity
               key={bloodGroup}
-              style={[styles.bloodGroupButton, selectedBloodGroup === bloodGroup && styles.activeButton]}
+              className={`p-3 rounded-md w-[48%] text-center ${selectedBloodGroup === bloodGroup ? 'bg-red-500' : 'bg-gray-100'
+                }`}
               onPress={() => handleBloodGroupClick(bloodGroup)}
             >
-              <Text style={styles.bloodGroupText}>{bloodGroup}</Text>
+              <Text className="text-gray-800">{bloodGroup}</Text>
             </TouchableOpacity>
           ))}
         </View>
-        <Text style={styles.heading}>Required Pint *</Text>
+
+        <Text className="text-lg font-bold mb-2 text-gray-800">Required Pint *</Text>
         <Picker
           selectedValue={selectedPint}
-          style={styles.input}
+          style={{ marginBottom: 20, backgroundColor: '#f3f3f3', borderRadius: 8 }}
           onValueChange={(itemValue) => setSelectedPint(itemValue)}
         >
           <Picker.Item label="1 pint" value="1" />
           <Picker.Item label="2 pints" value="2" />
         </Picker>
-        <Text style={styles.heading}>Required by *</Text>
-        <TouchableOpacity onPress={showDatePicker} style={styles.datePickerButton}>
+
+        <Text className="text-lg font-bold mb-2 text-gray-800">Required by *</Text>
+        <TouchableOpacity onPress={showDatePicker} className="flex-row items-center bg-gray-100 p-3 rounded-md mb-5">
           <Icon name="calendar" size={24} color="#333" />
-          <Text style={styles.dateText}>
-            {selectedDate ? `${selectedDate.toLocaleDateString()} - ${selectedDate.toLocaleString('en-US', { weekday: 'long' })}` : "Select Date"}
+          <Text className="text-gray-800 ml-3">
+            {selectedDate
+              ? `${selectedDate.toLocaleDateString()} - ${selectedDate.toLocaleString('en-US', {
+                weekday: 'long',
+              })}`
+              : 'Select Date'}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.heading}>Hospital Name*</Text>
+
+        <Text className="text-lg font-bold mb-2 text-gray-800">Hospital Name*</Text>
         <TextInput
-          style={styles.input}
+          className="bg-gray-100 p-3 rounded-md mb-5 text-gray-700"
+          placeholder="Enter hospital name"
           placeholderTextColor="#999"
+          value={hospitalName}
+          onChangeText={setHospitalName}
         />
-        <Text style={styles.heading}>Phone number</Text>
-        <View style={styles.phoneInputContainer}>
-          <Text style={styles.countryCode}>+977 | </Text>
+
+        <Text className="text-lg font-bold mb-2 text-gray-800">Phone number</Text>
+        <View className="flex-row items-center mb-5">
+          <Text className="text-gray-800">+977 | </Text>
           <TextInput
-            style={styles.phoneInput}
+            className="bg-gray-100 p-3 rounded-md flex-1 text-gray-700"
             value={phoneNumber}
             onChangeText={handlePhoneChange}
+            placeholder="Enter phone number"
             placeholderTextColor="#999"
             keyboardType="phone-pad"
             maxLength={7}
           />
         </View>
-        <TouchableOpacity style={styles.submitButton}>
-          <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity>
+
+        <Button
+          className="bg-red-500 p-4 rounded-md"
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          <Text className="text-white text-center font-bold">
+            {loading ? 'Submitting...' : 'Submit'}
+          </Text>
+        </Button>
       </View>
+
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-    </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    padding: 20,
-  },
-  formContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  heading: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#333',
-  },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    fontSize: 18,
-    justifyContent: 'center',
-  },
-  bloodGroupContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginBottom: 15,
-  },
-  bloodGroupButton: {
-    backgroundColor: '#f2f2f2',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginRight: 10,
-    marginBottom: 10,
-  },
-  activeButton: {
-    backgroundColor: '#FF3B30',
-  },
-  bloodGroupText: {
-    color: '#333',
-  },
-  submitButton: {
-    marginTop: 20,
-    backgroundColor: '#FF3B30',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  picker: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 15,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  dateText: {
-    fontSize: 18,
-    color: '#333',
-    paddingHorizontal: 15,
-    justifyContent: 'center',
-  },
-  phoneInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-  countryCode: {
-    fontSize: 18,
-    color: '#333',
-    paddingHorizontal: 15,
-  },
-  phoneInput: {
-    fontSize: 18,
-    flex: 1,
-    paddingHorizontal: 15,
-    color: '#333',
-  },
-  datePickerButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-});
