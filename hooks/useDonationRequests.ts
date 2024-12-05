@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import * as Location from 'expo-location';
+import { getUserLocation } from '~/utils/getUserLocation';
 
-type LocationCoords = Location.LocationObjectCoords | null;
+type LocationCoords = { latitude: number; longitude: number } | null;
 
 interface DonationRequest {
     id: string;
@@ -17,18 +17,8 @@ interface DonationRequest {
 export const useDonationRequests = (donationRequests: DonationRequest[]) => {
     const [userLocation, setUserLocation] = useState<LocationCoords>(null);
     const [sortedRequests, setSortedRequests] = useState<DonationRequest[]>([]);
-    const [loading, setLoading] = useState<boolean>(true); // Loading state
+    const [loading, setLoading] = useState<boolean>(true);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-    const getLocation = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-            return null;
-        }
-        const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.High });
-        return location.coords;
-    };
 
     const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
         const toRadians = (deg: number) => (deg * Math.PI) / 180;
@@ -43,25 +33,26 @@ export const useDonationRequests = (donationRequests: DonationRequest[]) => {
     };
 
     useEffect(() => {
-        const handleGetLocation = async () => {
+        const fetchUserLocation = async () => {
             try {
-                setLoading(true); // Start loading
-                const location = await getLocation();
+                setLoading(true);
+                const location = await getUserLocation();
                 if (location) {
                     setUserLocation(location);
                 }
-            } catch {
+            } catch (error) {
                 setErrorMsg('Failed to fetch location');
             } finally {
-                setLoading(false); // End loading
+                setLoading(false);
             }
         };
-        handleGetLocation();
+
+        fetchUserLocation();
     }, []);
 
     useEffect(() => {
         if (userLocation) {
-            setLoading(true); // Start loading for sorting
+            setLoading(true);
             const sorted = donationRequests
                 .map((request) => ({
                     ...request,
@@ -74,7 +65,7 @@ export const useDonationRequests = (donationRequests: DonationRequest[]) => {
                 }))
                 .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
             setSortedRequests(sorted);
-            setLoading(false); // End loading
+            setLoading(false);
         }
     }, [userLocation, donationRequests]);
 

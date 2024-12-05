@@ -12,11 +12,11 @@ const firebaseConfig = {
     apiKey: 'AIzaSyDon_DN6B0oUgm2XN32aeOtRPpIZW-O-Mg',
     authDomain: 'project-id.firebaseapp.com',
     databaseURL: 'https://project-id.firebaseio.com',
-    projectId: 'project-id',
-    storageBucket: 'project-id.appspot.com',
-    messagingSenderId: 'sender-id',
-    appId: 'app-id',
-    measurementId: 'G-measurement-id',
+    projectId: 'blood-44832',
+    storageBucket: 'blood-44832.firebasestorage.app',
+    // messagingSenderId: 'sender-id',
+    appId: '1:958764173154:android:85663462fba4998577ce3b',
+    // measurementId: 'G-measurement-id',
 };
 
 export const app = initializeApp(firebaseConfig);
