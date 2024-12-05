@@ -19,7 +19,7 @@ const Screen = () => {
         </CardHeader>
         <CardContent>
           <Text style={styles.title}>Save a life</Text>
-          <View style={styles.buttonContainer}>
+          <View className='flex flex-row'>
             <TouchableOpacity style={styles.button}>
               <MaterialIcons name="search" size={24} color="white" />
               <Text style={styles.buttonText}>Find donors</Text>
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   card: {
-    width: '90%',
+    width: '100%',
+    height: '100%',
     marginVertical: 0,
   },
   title: {
