@@ -1,24 +1,15 @@
 import React from 'react';
 import { Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import HospitalCard from './ListCard';
+import { DonationRequest } from '~/app/types/DonationRequest';
 
-interface DonationRequest {
-    id: string;
-    name: string;
-    hospital: string;
-    bloodGroup: string;
-    pint: string;
-    required_by: Date;
-    location: {
-        latitude: number;
-        longitude: number;
-    };
-    isUrgent?: boolean;
-    distance?: number;
+interface DonationRequestHome extends DonationRequest {
+    isUrgent: boolean;
+    distance: number;
 }
 
 interface DonationRequestsListProps {
-    sortedRequests: DonationRequest[];
+    sortedRequests: DonationRequestHome[];
     errorMsg: string | null;
 }
 
@@ -39,12 +30,13 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
                 renderItem={({ item }) => (
                     <HospitalCard
                         avatar="https://i.pravatar.cc/300"
-                        name={item.name}
+                        name={item.patientName}
                         address={item.hospital}
                         phone={`Required by: ${item.required_by}`}
                         bloodType={item.bloodGroup}
                         distance={`${item.distance?.toFixed(2)} km`}
                         isUrgent={item?.isUrgent || false}
+                        phoneNumber={item.phoneNumber}
                     />
                 )}
             />

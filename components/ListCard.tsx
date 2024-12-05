@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
-interface HospitalCardProps {
+interface ListCardProps {
     avatar: string;
     name: string;
     address: string;
@@ -10,9 +10,10 @@ interface HospitalCardProps {
     bloodType: string;
     distance: string;
     isUrgent?: boolean;
+    phoneNumber: string;
 }
 
-const HospitalCard: React.FC<HospitalCardProps> = ({
+const HospitalCard: React.FC<ListCardProps> = ({
     avatar,
     name,
     address,
@@ -20,6 +21,7 @@ const HospitalCard: React.FC<HospitalCardProps> = ({
     bloodType,
     distance,
     isUrgent,
+    phoneNumber
 }) => {
     return (
         <View style={styles.cardContainer}>
@@ -42,7 +44,7 @@ const HospitalCard: React.FC<HospitalCardProps> = ({
                     </View>
                     <View style={styles.infoRow}>
                         <FontAwesome name="phone" size={16} color="gray" />
-                        <Text style={[styles.infoText, styles.phoneText]}>{phone}</Text>
+                        <Text style={[styles.infoText, styles.phoneText]}>{phoneNumber}</Text>
                     </View>
                 </View>
             </View>

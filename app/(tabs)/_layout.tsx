@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 export default function TabLayout() {
     return (
-        <Tabs screenOptions={{ tabBarActiveTintColor: 'red', headerShown: false,tabBarHideOnKeyboard:true }}>
+        <Tabs screenOptions={{ tabBarActiveTintColor: 'red', headerShown: false, tabBarHideOnKeyboard: true, tabBarLabelStyle: { fontSize: 16 }, tabBarStyle: { height: 70 } }}>
             <Tabs.Screen
                 name="index"
                 options={{
@@ -15,17 +15,17 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="donate"
                 options={{
-                    title: 'Donate',
+                    title: 'Blood Requests',
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="heart" color={color} />,
                 }}
             />
-            <Tabs.Screen
+            {/* <Tabs.Screen
                 name="need"
                 options={{
-                    title: 'Need',
+                    title: 'Submit Requests',
                     tabBarIcon: ({ color }) => <MaterialIcons name='water-drop' size={28} color={color} />,
                 }}
-            />
+            /> */}
             <Tabs.Screen
                 name="profile"
                 options={{

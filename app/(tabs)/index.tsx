@@ -1,32 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Modal } from 'react-native';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Loader from '~/components/Loader';
-
 import { useDonationRequests } from '~/hooks/useDonationRequests';
 import { Link } from 'expo-router';
 import DonationRequestsList from '~/components/DonationRequestList';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '~/utils/firebaseConfig';
-
-interface DonationRequest {
-  id: string;
-  name: string;
-  hospital: string;
-  bloodGroup: string;
-  pint: string;
-  required_by: Date;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-}
+import { DonationRequest } from '~/app/types/DonationRequest';
+import Need from '~/components/need';
 
 const Screen: React.FC = () => {
   const [donationRequests, setDonationRequests] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false); // State to handle modal visibility
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -46,6 +35,8 @@ const Screen: React.FC = () => {
               latitude: data.location.latitude,
               longitude: data.location.longitude,
             },
+            phoneNumber: data.phoneNumber,
+            patientName: data.patientName,
           };
         });
         setDonationRequests(requests);
@@ -65,6 +56,7 @@ const Screen: React.FC = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
+
         {/* Header Card */}
         <View style={styles.header}>
           <Text style={styles.headerText}>Good Morning, Rajesh</Text>
@@ -79,7 +71,10 @@ const Screen: React.FC = () => {
             <MaterialIcons name="search" size={24} color="white" />
             <Text style={styles.buttonText}>Find donors</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setModalVisible(true)} // Open modal on button click
+          >
             <Feather name="edit" size={24} color="white" />
             <Text style={styles.buttonText}>Request</Text>
           </TouchableOpacity>
@@ -91,14 +86,29 @@ const Screen: React.FC = () => {
 
         {/* Section Title */}
         <View style={styles.sectionTitleContainer}>
-          <Text style={styles.sectionTitle}>Donation Requests</Text>
+          <Text style={styles.sectionTitle}>NearBy Requests</Text>
           <Link href="/donate" style={styles.viewAllLink}>View all</Link>
         </View>
 
         {/* Donation Requests List */}
-        {loading ? <Loader message="Fetching donation requests..." /> : 
+        {loading ? (
+          <Loader message="Fetching donation requests..." />
+        ) : (
           <DonationRequestsList sortedRequests={sortedRequests} errorMsg={errorMsg} />
-        }
+        )}
+
+        {/* Modal */}
+        <Modal
+          presentationStyle='pageSheet'
+          visible={isModalVisible}
+          animationType="slide"
+          onRequestClose={() => setModalVisible(false)} // Close modal on back press
+
+        >
+
+          <Need onClose={() => setModalVisible(false)} />
+
+        </Modal>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -157,6 +167,15 @@ const styles = StyleSheet.create({
   },
   viewAllLink: {
     color: '#ef4444',
+  },
+  closeButton: {
+    padding: 16,
+    backgroundColor: '#ef4444',
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
