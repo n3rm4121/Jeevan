@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Modal } from 'react-native';
-import { MaterialIcons, Feather } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Modal, Image, Dimensions } from 'react-native';
+import { MaterialIcons, Feather, FontAwesome } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Loader from '~/components/Loader';
 import { useDonationRequests } from '~/hooks/useDonationRequests';
@@ -8,14 +8,41 @@ import { Link } from 'expo-router';
 import DonationRequestsList from '~/components/DonationRequestList';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '~/utils/firebaseConfig';
-import { DonationRequest } from '~/app/types/DonationRequest';
-import Need from '~/components/need';
+import DonationRequest from '~/app/types/DonationRequest';
+import BloodDonationModal from '~/components/InstructionModal';
+import NeedFormModal from '~/components/NeedFormModal';
+import Carousel from 'react-native-reanimated-carousel'; // Importing the new carousel
 
 const Screen: React.FC = () => {
   const [donationRequests, setDonationRequests] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalVisible, setModalVisible] = useState(false); // State to handle modal visibility
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalInstruction, setModalInstruction] = useState(false);
+
+  // Carousel data for campaigns
+  const campaigns = [
+    {
+      id: 1,
+      title: "Save Lives with Your Blood",
+      description: "Join our blood donation campaign to help save lives.",
+      image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
+    },
+    {
+      id: 2,
+      title: "Donate Blood, Save a Family",
+      description: "Your blood can be the difference for a family in need.",
+      image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
+    },
+    {
+      id: 3,
+      title: "Be a Hero, Donate Today",
+      description: "Every drop counts. Become a hero in your community.",
+      image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
+    },
+  ];
+
+  const { width } = Dimensions.get('window'); // Get window width for carousel
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -57,20 +84,27 @@ const Screen: React.FC = () => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
 
-        {/* Header Card */}
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Good Morning, Rajesh</Text>
+        {/* Carousel for Campaigns */}
+        <View style={styles.carouselContainer}>
+          <Carousel
+            loop
+            width={width} // Set carousel width
+            height={600} // Set carousel height
+            autoPlay={true} // Auto play carousel
+            scrollAnimationDuration={500} // Animation speed
+            data={campaigns}
+            renderItem={({ item }) => (
+              <View style={styles.carouselItem}>
+                <Image source={{ uri: item.image }} style={styles.carouselImage} />
+                <Text style={styles.carouselTitle}>{item.title}</Text>
+                <Text style={styles.carouselDescription}>{item.description}</Text>
+              </View>
+            )}
+          />
         </View>
-
-        {/* Title */}
-        <Text style={styles.title}>Save a life</Text>
 
         {/* Buttons */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <MaterialIcons name="search" size={24} color="white" />
-            <Text style={styles.buttonText}>Find donors</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => setModalVisible(true)} // Open modal on button click
@@ -78,16 +112,20 @@ const Screen: React.FC = () => {
             <Feather name="edit" size={24} color="white" />
             <Text style={styles.buttonText}>Request</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={() => setModalInstruction(true)} style={styles.button}>
             <MaterialIcons name="list" size={24} color="white" />
-            <Text style={styles.buttonText}>Instructions</Text>
+            <Text style={styles.buttonText}>Donor Instructions</Text>
           </TouchableOpacity>
+          <BloodDonationModal isOpen={modalInstruction} onClose={() => setModalInstruction(false)} />
+          <NeedFormModal isOpen={isModalVisible} onClose={() => setModalVisible(false)} />
         </View>
 
         {/* Section Title */}
         <View style={styles.sectionTitleContainer}>
           <Text style={styles.sectionTitle}>NearBy Requests</Text>
-          <Link href="/donate" style={styles.viewAllLink}>View all</Link>
+          <Link href="/donate" style={styles.viewAllLink}>View all
+            <FontAwesome name="arrow-right" size={16} color="#ef4444" />
+          </Link>
         </View>
 
         {/* Donation Requests List */}
@@ -96,19 +134,6 @@ const Screen: React.FC = () => {
         ) : (
           <DonationRequestsList sortedRequests={sortedRequests} errorMsg={errorMsg} />
         )}
-
-        {/* Modal */}
-        <Modal
-          presentationStyle='pageSheet'
-          visible={isModalVisible}
-          animationType="slide"
-          onRequestClose={() => setModalVisible(false)} // Close modal on back press
-
-        >
-
-          <Need onClose={() => setModalVisible(false)} />
-
-        </Modal>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -117,30 +142,44 @@ const Screen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    gap: 16,
     backgroundColor: '#f3f4f6',
   },
-  header: {
-    padding: 16,
-    backgroundColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+  carouselContainer: {
+    paddingTop: 16, // Space above carousel
+    marginBottom: '50%', // Space between carousel and other content
   },
-  headerText: {
+  carouselItem: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carouselImage: {
+    width: '100%',
+    height: 100,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  carouselTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginHorizontal: 16,
+  carouselDescription: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 8,
   },
   buttonContainer: {
+    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 16,
+    marginBottom: 16, // Adding space below the buttons
   },
   button: {
     backgroundColor: '#ef4444',
@@ -149,10 +188,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1, // Ensures the buttons stretch evenly
+    marginHorizontal: 8, // Adds spacing between buttons
   },
   buttonText: {
     color: '#ffffff',
     marginLeft: 8,
+    fontSize: 16,
   },
   sectionTitleContainer: {
     flexDirection: 'row',
@@ -166,16 +208,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   viewAllLink: {
+    flexDirection: 'row',
     color: '#ef4444',
-  },
-  closeButton: {
-    padding: 16,
-    backgroundColor: '#ef4444',
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
 });
 

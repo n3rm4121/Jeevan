@@ -1,4 +1,4 @@
-export interface DonationRequest {
+export default interface DonationRequest {
     id: string;
     name: string;
     hospital: string;

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import RequestInfoModal from './RequestInfoModal';  // Import the modal
 
 interface ListCardProps {
     avatar: string;
@@ -11,6 +12,8 @@ interface ListCardProps {
     distance: string;
     isUrgent?: boolean;
     phoneNumber: string;
+    patientName: string;
+    requiredBy: string;
 }
 
 const HospitalCard: React.FC<ListCardProps> = ({
@@ -21,43 +24,71 @@ const HospitalCard: React.FC<ListCardProps> = ({
     bloodType,
     distance,
     isUrgent,
-    phoneNumber
+    phoneNumber,
+    patientName,
+    requiredBy,
 }) => {
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const handleCardPress = () => {
+        setModalVisible(true);  // Open the modal when the card is pressed
+    };
+
+    const handleCloseModal = () => {
+        setModalVisible(false);  // Close the modal
+    };
+
     return (
-        <View style={styles.cardContainer}>
-            {/* Left Section: Avatar and Info */}
-            <View style={styles.leftSection}>
-                {/* Avatar */}
-                <View style={styles.avatarContainer}>
-                    <Image source={{ uri: avatar }} style={styles.avatar} />
-                    {isUrgent && (
-                        <Text style={styles.urgentBadge}>Urgent</Text>
-                    )}
-                </View>
+        <View>
+            <TouchableOpacity onPress={handleCardPress}>
+                <View style={styles.cardContainer}>
+                    {/* Left Section: Avatar and Info */}
+                    <View style={styles.leftSection}>
+                        {/* Avatar */}
+                        <View style={styles.avatarContainer}>
+                            <Image source={{ uri: avatar }} style={styles.avatar} />
+                            {isUrgent && <Text style={styles.urgentBadge}>Urgent</Text>}
+                        </View>
 
-                {/* Hospital Info */}
-                <View>
-                    <Text style={styles.hospitalName}>{name}</Text>
-                    <View style={styles.infoRow}>
-                        <MaterialIcons name="location-on" size={16} color="gray" />
-                        <Text style={styles.infoText}>{address}</Text>
+                        {/* Hospital Info */}
+                        <View>
+                            <Text style={styles.hospitalName}>{name}</Text>
+                            <View style={styles.infoRow}>
+                                <MaterialIcons name="location-on" size={16} color="gray" />
+                                <Text style={styles.infoText}>{address}</Text>
+                            </View>
+                            <View style={styles.infoRow}>
+                                <FontAwesome name="phone" size={16} color="gray" />
+                                <Text style={[styles.infoText, styles.phoneText]}>{phoneNumber}</Text>
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.infoRow}>
-                        <FontAwesome name="phone" size={16} color="gray" />
-                        <Text style={[styles.infoText, styles.phoneText]}>{phoneNumber}</Text>
+
+                    {/* Right Section: Blood Type and Distance */}
+                    <View style={styles.rightSection}>
+                        <TouchableOpacity style={[styles.badge, styles.bloodBadge]}>
+                            <Text style={styles.badgeText}>{bloodType}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.badge, styles.distanceBadge]}>
+                            <Text style={styles.badgeText}>{distance}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
 
-            {/* Right Section: Blood Type and Distance */}
-            <View style={styles.rightSection}>
-                <TouchableOpacity style={[styles.badge, styles.bloodBadge]}>
-                    <Text style={styles.badgeText}>{bloodType}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.badge, styles.distanceBadge]}>
-                    <Text style={styles.badgeText}>{distance}</Text>
-                </TouchableOpacity>
-            </View>
+            {/* Request Info Modal */}
+            <RequestInfoModal
+                visible={isModalVisible}
+                onClose={handleCloseModal}
+                avatar={avatar}
+                name={name}
+                address={address}
+                phoneNumber={phoneNumber}
+                bloodType={bloodType}
+                distance={distance}
+                patientName={patientName}
+                requiredBy={requiredBy}
+            />
         </View>
     );
 };
@@ -89,45 +120,45 @@ const styles = StyleSheet.create({
         borderRadius: 24,
     },
     urgentBadge: {
-        backgroundColor: '#ef4444',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#f87171',
+        padding: 4,
+        borderRadius: 4,
+        fontSize: 10,
         color: '#fff',
-        fontSize: 12,
-        borderRadius: 16,
-        paddingHorizontal: 8,
-        marginTop: 4,
-        alignSelf: 'center',
     },
     hospitalName: {
-        fontSize: 16,
         fontWeight: 'bold',
+        fontSize: 16,
     },
     infoRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 4,
     },
     infoText: {
-        color: '#6b7280',
         fontSize: 14,
+        color: '#6b7280',
         marginLeft: 4,
     },
     phoneText: {
-        marginLeft: 8,
+        fontWeight: 'bold',
     },
     rightSection: {
-        alignItems: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     badge: {
-        borderRadius: 16,
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        marginBottom: 8,
+        padding: 8,
+        borderRadius: 12,
+        marginLeft: 8,
     },
     bloodBadge: {
-        backgroundColor: '#ef4444',
+        backgroundColor: '#10b981',
     },
     distanceBadge: {
-        backgroundColor: '#10b981',
+        backgroundColor: '#fbbf24',
     },
     badgeText: {
         color: '#fff',

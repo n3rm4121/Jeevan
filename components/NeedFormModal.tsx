@@ -8,6 +8,7 @@ import {
   Alert,
   StyleSheet,
   ScrollView,
+  Modal,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +18,7 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { app } from '~/utils/firebaseConfig';
 import { getUserLocation } from '~/utils/getUserLocation';
 
-export default function Need({ onClose }: { onClose: () => void }) {
+export default function NeedFormModal({ isOpen, onClose }: { isOpen: () => void, onClose: () => void }) {
   const [selectedPint, setSelectedPint] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -99,7 +100,13 @@ export default function Need({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <SafeAreaView >
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isOpen}
+      onRequestClose={onClose}
+    >
+
       <ScrollView >
         <View style={styles.card} >
           {/* Close Button (X) */}
@@ -189,14 +196,13 @@ export default function Need({ onClose }: { onClose: () => void }) {
           onCancel={hideDatePicker}
         />
       </ScrollView>
-    </SafeAreaView>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
     padding: 16,
   },
   card: {

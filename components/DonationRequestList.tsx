@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import HospitalCard from './ListCard';
-import { DonationRequest } from '~/app/types/DonationRequest';
+import DonationRequest from '~/app/types/DonationRequest';
 
 interface DonationRequestHome extends DonationRequest {
     isUrgent: boolean;
@@ -47,6 +47,7 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 10,
         backgroundColor: '#f3f4f6',
     },
     errorText: {
