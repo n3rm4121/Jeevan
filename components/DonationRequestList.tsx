@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, SafeAreaView } from 'react-native';
+import HospitalCard from './ListCard';
 
 interface DonationRequest {
     id: string;
@@ -9,6 +10,7 @@ interface DonationRequest {
     pint: string;
     required_by: string;
     distance?: number;
+    isUrgent?: boolean;
 }
 
 interface DonationRequestsListProps {
@@ -31,12 +33,15 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
                 data={sortedRequests}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View className="p-4 bg-white shadow my-2 mx-4 rounded-lg">
-                        <Text className="font-bold">{item.name}</Text>
-                        <Text>{item.hospital}</Text>
-                        <Text>{item.bloodGroup}</Text>
-                        <Text>{item.distance?.toFixed(2)} km away</Text>
-                    </View>
+                    <HospitalCard
+                        avatar="https://i.pravatar.cc/300" // Placeholder avatar, you can replace it with actual data
+                        name={item.name}
+                        address={item.hospital}
+                        phone={`Required by: ${item.required_by}`}
+                        bloodType={item.bloodGroup}
+                        distance={`${item.distance?.toFixed(2)} km`}
+                        isUrgent={item?.isUrgent || false}
+                    />
                 )}
 
             />
