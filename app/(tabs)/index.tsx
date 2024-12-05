@@ -12,6 +12,7 @@ import DonationRequest from '~/app/types/DonationRequest';
 import BloodDonationModal from '~/components/InstructionModal';
 import NeedFormModal from '~/components/NeedFormModal';
 import Carousel from 'react-native-reanimated-carousel'; // Importing the new carousel
+import { Campaigns } from './campaigns';
 
 const Screen: React.FC = () => {
   const [donationRequests, setDonationRequests] = useState<DonationRequest[]>([]);
@@ -20,13 +21,14 @@ const Screen: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalInstruction, setModalInstruction] = useState(false);
 
+
   // Carousel data for campaigns
-  const campaigns = [
+  const test = [
     {
       id: 1,
       title: "Save Lives with Your Blood",
       description: "Join our blood donation campaign to help save lives.",
-      image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtiQZu_Z4sqPZRDv2cbmE_OZSkyKhN6hz-CQ&s'
     },
     {
       id: 2,
@@ -41,6 +43,8 @@ const Screen: React.FC = () => {
       image: 'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'
     },
   ];
+
+  const campaigns = [...Campaigns, ...test];
 
   const { width } = Dimensions.get('window'); // Get window width for carousel
 
@@ -114,7 +118,7 @@ const Screen: React.FC = () => {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalInstruction(true)} style={styles.button}>
             <MaterialIcons name="list" size={24} color="white" />
-            <Text style={styles.buttonText}>Donor Instructions</Text>
+            <Text style={styles.buttonText}>Instructions</Text>
           </TouchableOpacity>
           <BloodDonationModal isOpen={modalInstruction} onClose={() => setModalInstruction(false)} />
           <NeedFormModal isOpen={isModalVisible} onClose={() => setModalVisible(false)} />
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
   },
   carouselContainer: {
     paddingTop: 16, // Space above carousel
-    marginBottom: '50%', // Space between carousel and other content
+    marginBottom: '70%', // Space between carousel and other content
   },
   carouselItem: {
     backgroundColor: '#ffffff',
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
   },
   carouselImage: {
     width: '100%',
-    height: 100,
+    height: 200,
     borderRadius: 8,
     marginBottom: 12,
   },
@@ -175,11 +179,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   buttonContainer: {
-    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 16,
-    marginBottom: 16, // Adding space below the buttons
+    marginTop: 20,
+    marginBottom: 0, // Adding space below the buttons
   },
   button: {
     backgroundColor: '#ef4444',
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 16,
-    marginTop: 24,
+    marginTop: 10,
   },
   sectionTitle: {
     fontSize: 18,

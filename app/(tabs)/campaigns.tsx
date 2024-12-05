@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, ScrollView, Dim
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const Campaigns = [
+export const Campaigns = [
   {
     id: 1,
     title: 'विश्व रक्तदाता दिवस अभियान',
@@ -16,9 +16,9 @@ const Campaigns = [
   },
   {
     id: 2,
-    title: 'Share Life, Give Blood - Nepal Red Cross Day Campaign',
+    title: 'Share Life, Give Blood',
     image: 'https://www.uri.org/sites/default/files/styles/hero_banner/public/media/images/2021/NU%20Blood%20Donation%20Program%20%20%282%29.jpg?h=9886a93b',
-    description: 'Join us in the effort to save lives by donating blood. Your contribution is vital in times of need.',
+    description: 'Join us in the effort to save lives by donating blood.',
     details: 'This campaign was held on the occasion of the 59th Nepal Red Cross Day at the Nepal Red Cross Society National Headquarters in Kalimati, Kathmandu. The program was organized to encourage blood donation and help those in need.',
     location: 'Kalimati, Kathmandu, Nepal',
     date: '4th September 2021',
@@ -42,21 +42,21 @@ const CampaignPage = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.title}>Blood Donation Campaigns</Text>
 
         {Campaigns.map((campaign) => (
-          <TouchableOpacity 
-            key={campaign.id} 
-            style={styles.campaignCard} 
+          <TouchableOpacity
+            key={campaign.id}
+            style={styles.campaignCard}
             onPress={() => handleCampaignClick(campaign)}
           >
-            <Image 
-              source={{ uri: campaign.image }} 
-              style={styles.campaignImage} 
+            <Image
+              source={{ uri: campaign.image }}
+              style={styles.campaignImage}
               resizeMode="cover"
             />
             <View style={styles.campaignTextContainer}>
@@ -92,39 +92,39 @@ const CampaignPage = () => {
             <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
               <MaterialIcons name="close" size={30} color="#333" />
             </TouchableOpacity>
-            
-            <ScrollView 
+
+            <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.modalScrollContent}
             >
-              <Image 
-                source={{ uri: selectedCampaign?.image }} 
-                style={styles.modalImage} 
+              <Image
+                source={{ uri: selectedCampaign?.image }}
+                style={styles.modalImage}
                 resizeMode="cover"
               />
-              
+
               <View style={styles.modalTextContainer}>
                 <Text style={styles.modalTitle}>{selectedCampaign?.title}</Text>
-                
+
                 <View style={styles.modalInfoSection}>
                   <MaterialIcons name="description" size={24} color="#3498db" />
                   <Text style={styles.modalInfoText}>{selectedCampaign?.details}</Text>
                 </View>
-                
+
                 <View style={styles.modalInfoSection}>
                   <MaterialIcons name="location-on" size={24} color="#e74c3c" />
                   <Text style={styles.modalInfoText}>
                     Location: {selectedCampaign?.location}
                   </Text>
                 </View>
-                
+
                 <View style={styles.modalInfoSection}>
                   <MaterialIcons name="date-range" size={24} color="#2ecc71" />
                   <Text style={styles.modalInfoText}>
                     Date: {selectedCampaign?.date}
                   </Text>
                 </View>
-                
+
                 <View style={styles.modalInfoSection}>
                   <MaterialIcons name="business" size={24} color="#9b59b6" />
                   <Text style={styles.modalInfoText}>
