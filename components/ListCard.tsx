@@ -19,7 +19,8 @@ const HospitalCard: React.FC<HospitalCardProps> = ({
     phone,
     bloodType,
     distance,
-    isUrgent
+    isUrgent,
+
 }) => {
     return (
         <View className="bg-gray-200 flex-row gap-4 mb-4 items-center justify-between p-4 rounded-lg shadow-md">

@@ -2,16 +2,17 @@ import { useState, useEffect } from 'react';
 import { getUserLocation } from '~/utils/getUserLocation';
 
 type LocationCoords = { latitude: number; longitude: number } | null;
-
 interface DonationRequest {
     id: string;
     name: string;
     hospital: string;
     bloodGroup: string;
-    location: { latitude: number; longitude: number };
     pint: string;
-    required_by: string;
-    distance?: number;
+    required_by: Date;
+    location: {
+        latitude: number;
+        longitude: number;
+    };
 }
 
 export const useDonationRequests = (donationRequests: DonationRequest[]) => {
@@ -69,5 +70,6 @@ export const useDonationRequests = (donationRequests: DonationRequest[]) => {
         }
     }, [userLocation, donationRequests]);
 
+    // console.log(sortedRequests);
     return { sortedRequests, loading, errorMsg, userLocation };
 };

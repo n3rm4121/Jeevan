@@ -8,10 +8,15 @@ interface DonationRequest {
     hospital: string;
     bloodGroup: string;
     pint: string;
-    required_by: string;
-    distance?: number;
+    required_by: Date;
+    location: {
+        latitude: number;
+        longitude: number;
+    };
     isUrgent?: boolean;
+    distance?: number;
 }
+
 
 interface DonationRequestsListProps {
     sortedRequests: DonationRequest[];
@@ -26,7 +31,7 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
     if (!sortedRequests.length) {
         return <Text className="mx-4 mt-4">No donation requests available.</Text>;
     }
-
+    // console.log(sortedRequests)
     return (
         <SafeAreaView className="flex-1 bg-gray-100">
             <FlatList
@@ -34,7 +39,7 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <HospitalCard
-                        avatar="https://i.pravatar.cc/300" // Placeholder avatar, you can replace it with actual data
+                        avatar="https://i.pravatar.cc/300"
                         name={item.name}
                         address={item.hospital}
                         phone={`Required by: ${item.required_by}`}
