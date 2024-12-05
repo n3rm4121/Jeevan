@@ -15,6 +15,9 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-firebase/app": "^21.6.1",
+    "@react-native-firebase/auth": "^21.6.1",
+    "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-navigation/native": "^7.0.0",
     "@rn-primitives/avatar": "~1.1.0",
     "@rn-primitives/portal": "~1.1.0",
@@ -39,6 +42,7 @@
     "react-dom": "^18.3.1",
     "react-native": "^0.76.3",
     "react-native-geolocation-service": "^5.3.1",
+    "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-picker-select": "^9.3.1",
     "react-native-reanimated": "~3.16.1",
@@ -51,7 +55,8 @@
     "tailwind-merge": "^2.2.1",
     "tailwind-rn": "^4.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "expo-linear-gradient": "~14.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
