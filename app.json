@@ -30,10 +30,11 @@
     },
     "plugins": [
     [
-      "expo-router",
+      
+      "expo-location",
       {
-        "origin": "https://evanbacon.dev/"
-      }
+        "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+      } 
     ]
   ],
     "experiments": {

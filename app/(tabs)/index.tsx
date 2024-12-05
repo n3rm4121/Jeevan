@@ -1,19 +1,25 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Loader from '~/components/Loader';
+import { useDonationRequests } from '~/hooks/useDonationRequests';
+import { Link } from 'expo-router';
+import DonationRequestsList from '~/components/DonationRequestList';
 
-const Screen = () => {
-  const donationRequests = [
-    { id: '1', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '2', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '3', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '4', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '5', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '6', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '7', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-    { id: '8', name: 'Ram Rana', hospital: 'Bhaktapur Hospital', rating: 'A+' },
-  ];
+const donationRequests = [
+  { id: '1', name: 'Real Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '1', required_by: 'date', location: { latitude: 27.671, longitude: 85.429 } },
+  { id: '2', name: 'Bhu Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '2', required_by: 'date', location: { latitude: 28.671, longitude: 86.429 } },
+  { id: '3', name: 'Lha Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '1', required_by: 'date', location: { latitude: 29.671, longitude: 87.429 } },
+  { id: '4', name: 'Lasutohsh Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '2', required_by: 'date', location: { latitude: 30.671, longitude: 88.429 } },
+];
+
+const Screen: React.FC = () => {
+  const { sortedRequests, loading, errorMsg } = useDonationRequests(donationRequests);
+
+  // if (loading) {
+  //   return <Loader message="Fetching donation requests..." />;
+  // }
 
   return (
     <SafeAreaProvider>
@@ -43,29 +49,16 @@ const Screen = () => {
         </View>
 
         {/* Section Title */}
-        <Text className="text-lg font-bold mt-6 mx-4">Donation Requests</Text>
-
-        {/* Scrollable Donation Requests List */}
-        <View className="flex-1 mt-8">
-          <FlatList
-            data={donationRequests}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View className="bg-white p-4 rounded-lg mx-4 mb-4 shadow">
-                <View className="flex-row justify-between items-center">
-                  <Text className="text-lg font-bold">{item.name}</Text>
-                  <Text
-                    className={`text-sm px-2 py-1 rounded-lg ${item.rating === 'A+' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                      }`}
-                  >
-                    {item.rating}
-                  </Text>
-                </View>
-                <Text className="text-gray-500">{item.hospital}</Text>
-              </View>
-            )}
-          />
+        <View className="flex flex-row justify-between items-center mx-4">
+          <Text className="text-lg font-bold mt-6">Donation Requests</Text>
+          <Link href="/donate" className="text-red-500">View all</Link>
         </View>
+
+        {/* Donation Requests List */}
+        {loading ? <Loader message="Fetching donation requests..." /> :
+          <DonationRequestsList sortedRequests={sortedRequests} errorMsg={errorMsg} />
+
+        }
       </SafeAreaView>
     </SafeAreaProvider>
   );
