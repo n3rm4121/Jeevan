@@ -1,11 +1,12 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons'
+import { KeyboardAvoidingView } from 'react-native';
 
 
 export default function TabLayout() {
     return (
-        <Tabs screenOptions={{ tabBarActiveTintColor: 'red', headerShown: false, }}>
+        <Tabs screenOptions={{ tabBarActiveTintColor: 'red', headerShown: false,tabBarHideOnKeyboard:true }}>
             <Tabs.Screen
                 name="index"
                 options={{
