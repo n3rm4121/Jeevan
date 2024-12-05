@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, SafeAreaView } from 'react-native';
+import { Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import HospitalCard from './ListCard';
 
 interface DonationRequest {
@@ -17,7 +17,6 @@ interface DonationRequest {
     distance?: number;
 }
 
-
 interface DonationRequestsListProps {
     sortedRequests: DonationRequest[];
     errorMsg: string | null;
@@ -25,15 +24,15 @@ interface DonationRequestsListProps {
 
 const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedRequests, errorMsg }) => {
     if (errorMsg) {
-        return <Text className="text-red-500 mx-4">{errorMsg}</Text>;
+        return <Text style={styles.errorText}>{errorMsg}</Text>;
     }
 
     if (!sortedRequests.length) {
-        return <Text className="mx-4 mt-4">No donation requests available.</Text>;
+        return <Text style={styles.noRequestsText}>No donation requests available.</Text>;
     }
-    // console.log(sortedRequests)
+
     return (
-        <SafeAreaView className="flex-1 bg-gray-100">
+        <SafeAreaView style={styles.container}>
             <FlatList
                 data={sortedRequests}
                 keyExtractor={(item) => item.id}
@@ -48,10 +47,24 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
                         isUrgent={item?.isUrgent || false}
                     />
                 )}
-
             />
         </SafeAreaView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f3f4f6',
+    },
+    errorText: {
+        color: '#ef4444',
+        marginHorizontal: 16,
+    },
+    noRequestsText: {
+        marginHorizontal: 16,
+        marginTop: 16,
+    },
+});
 
 export default DonationRequestsList;

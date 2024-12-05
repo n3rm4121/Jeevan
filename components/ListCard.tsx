@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 interface HospitalCardProps {
@@ -20,51 +20,117 @@ const HospitalCard: React.FC<HospitalCardProps> = ({
     bloodType,
     distance,
     isUrgent,
-
 }) => {
     return (
-        <View className="bg-gray-200 flex-row gap-4 mb-4 items-center justify-between p-4 rounded-lg shadow-md">
+        <View style={styles.cardContainer}>
             {/* Left Section: Avatar and Info */}
-            <View className="flex-row items-center">
+            <View style={styles.leftSection}>
                 {/* Avatar */}
-                <View className="mr-4">
-                    <Image
-                        source={{ uri: avatar }}
-                        className="w-12 h-12 rounded-full"
-                        alt="avatar"
-                    />
+                <View style={styles.avatarContainer}>
+                    <Image source={{ uri: avatar }} style={styles.avatar} />
                     {isUrgent && (
-                        <Text className="bg-red-500 text-white text-xs rounded-full px-2 mt-1 self-center">
-                            Urgent
-                        </Text>
+                        <Text style={styles.urgentBadge}>Urgent</Text>
                     )}
                 </View>
 
                 {/* Hospital Info */}
                 <View>
-                    <Text className="text-lg font-bold">{name}</Text>
-                    <View className="flex-row items-center">
+                    <Text style={styles.hospitalName}>{name}</Text>
+                    <View style={styles.infoRow}>
                         <MaterialIcons name="location-on" size={16} color="gray" />
-                        <Text className="text-sm text-gray-600">{address}</Text>
+                        <Text style={styles.infoText}>{address}</Text>
                     </View>
-                    <View className="flex-row items-center">
+                    <View style={styles.infoRow}>
                         <FontAwesome name="phone" size={16} color="gray" />
-                        <Text className="text-sm text-gray-600 ml-1">{phone}</Text>
+                        <Text style={[styles.infoText, styles.phoneText]}>{phone}</Text>
                     </View>
                 </View>
             </View>
 
             {/* Right Section: Blood Type and Distance */}
-            <View className="flex-col items-end">
-                <TouchableOpacity className="bg-red-500 px-3 py-1 rounded-full mb-2">
-                    <Text className="text-white font-bold">{bloodType}</Text>
+            <View style={styles.rightSection}>
+                <TouchableOpacity style={[styles.badge, styles.bloodBadge]}>
+                    <Text style={styles.badgeText}>{bloodType}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="bg-green-500 px-3 py-1 rounded-full">
-                    <Text className="text-white font-bold">{distance}</Text>
+                <TouchableOpacity style={[styles.badge, styles.distanceBadge]}>
+                    <Text style={styles.badgeText}>{distance}</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    cardContainer: {
+        backgroundColor: '#e5e7eb',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 16,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        marginBottom: 16,
+    },
+    leftSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    avatarContainer: {
+        marginRight: 16,
+    },
+    avatar: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+    },
+    urgentBadge: {
+        backgroundColor: '#ef4444',
+        color: '#fff',
+        fontSize: 12,
+        borderRadius: 16,
+        paddingHorizontal: 8,
+        marginTop: 4,
+        alignSelf: 'center',
+    },
+    hospitalName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 4,
+    },
+    infoText: {
+        color: '#6b7280',
+        fontSize: 14,
+        marginLeft: 4,
+    },
+    phoneText: {
+        marginLeft: 8,
+    },
+    rightSection: {
+        alignItems: 'flex-end',
+    },
+    badge: {
+        borderRadius: 16,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        marginBottom: 8,
+    },
+    bloodBadge: {
+        backgroundColor: '#ef4444',
+    },
+    distanceBadge: {
+        backgroundColor: '#10b981',
+    },
+    badgeText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+});
 
 export default HospitalCard;

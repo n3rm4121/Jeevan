@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Loader from '~/components/Loader';
+
 import { useDonationRequests } from '~/hooks/useDonationRequests';
 import { Link } from 'expo-router';
 import DonationRequestsList from '~/components/DonationRequestList';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '~/utils/firebaseConfig';
 
-// const donationRequests = [
-//   { id: '1', name: 'Real Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '1', required_by: 'date', location: { latitude: 27.671, longitude: 85.429 } },
-//   { id: '2', name: 'Bhu Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '2', required_by: 'date', location: { latitude: 28.671, longitude: 86.429 } },
-//   { id: '3', name: 'Lha Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '1', required_by: 'date', location: { latitude: 29.671, longitude: 87.429 } },
-//   { id: '4', name: 'Lasutohsh Rana', hospital: 'Bhaktapur Hospital', bloodGroup: 'A+', pint: '2', required_by: 'date', location: { latitude: 30.671, longitude: 88.429 } },
-// ];
 interface DonationRequest {
   id: string;
   name: string;
@@ -29,11 +24,10 @@ interface DonationRequest {
 }
 
 const Screen: React.FC = () => {
-
-
   const [donationRequests, setDonationRequests] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchRequests = async () => {
       setLoading(true);
@@ -68,48 +62,102 @@ const Screen: React.FC = () => {
 
   const { sortedRequests, errorMsg } = useDonationRequests(donationRequests);
 
-
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="flex-1 bg-gray-100">
+      <SafeAreaView style={styles.container}>
         {/* Header Card */}
-        <View className="p-4 bg-white shadow">
-          <Text className="text-lg font-bold">Good Morning, Rajesh</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Good Morning, Rajesh</Text>
         </View>
 
         {/* Title */}
-        <Text className="text-xl font-bold mt-4 mx-4">Save a life</Text>
+        <Text style={styles.title}>Save a life</Text>
 
         {/* Buttons */}
-        <View className="flex-row justify-around mt-4">
-          <TouchableOpacity className="bg-red-500 px-4 py-3 rounded-lg flex-row items-center">
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button}>
             <MaterialIcons name="search" size={24} color="white" />
-            <Text className="text-white ml-2">Find donors</Text>
+            <Text style={styles.buttonText}>Find donors</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-red-500 px-4 py-3 rounded-lg flex-row items-center">
+          <TouchableOpacity style={styles.button}>
             <Feather name="edit" size={24} color="white" />
-            <Text className="text-white ml-2">Request</Text>
+            <Text style={styles.buttonText}>Request</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-red-500 px-4 py-3 rounded-lg flex-row items-center">
+          <TouchableOpacity style={styles.button}>
             <MaterialIcons name="list" size={24} color="white" />
-            <Text className="text-white ml-2">Instructions</Text>
+            <Text style={styles.buttonText}>Instructions</Text>
           </TouchableOpacity>
         </View>
 
         {/* Section Title */}
-        <View className="flex flex-row justify-between items-center mx-4">
-          <Text className="text-lg font-bold mt-6">Donation Requests</Text>
-          <Link href="/donate" className="text-red-500">View all</Link>
+        <View style={styles.sectionTitleContainer}>
+          <Text style={styles.sectionTitle}>Donation Requests</Text>
+          <Link href="/donate" style={styles.viewAllLink}>View all</Link>
         </View>
 
         {/* Donation Requests List */}
-        {loading ? <Loader message="Fetching donation requests..." /> :
+        {loading ? <Loader message="Fetching donation requests..." /> : 
           <DonationRequestsList sortedRequests={sortedRequests} errorMsg={errorMsg} />
-
         }
       </SafeAreaView>
     </SafeAreaProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f3f4f6',
+  },
+  header: {
+    padding: 16,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginHorizontal: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 16,
+  },
+  button: {
+    backgroundColor: '#ef4444',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#ffffff',
+    marginLeft: 8,
+  },
+  sectionTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  viewAllLink: {
+    color: '#ef4444',
+  },
+});
 
 export default Screen;
