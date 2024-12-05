@@ -17,10 +17,6 @@ const donationRequests = [
 const Screen: React.FC = () => {
   const { sortedRequests, loading, errorMsg } = useDonationRequests(donationRequests);
 
-  // if (loading) {
-  //   return <Loader message="Fetching donation requests..." />;
-  // }
-
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-gray-100">
