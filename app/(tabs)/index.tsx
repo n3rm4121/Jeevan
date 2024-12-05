@@ -11,7 +11,7 @@ import { db } from '~/utils/firebaseConfig';
 import DonationRequest from '~/app/types/DonationRequest';
 import BloodDonationModal from '~/components/InstructionModal';
 import NeedFormModal from '~/components/NeedFormModal';
-import Carousel from 'react-native-reanimated-carousel'; 
+import Carousel from 'react-native-reanimated-carousel';
 import { Campaigns } from './campaigns';
 
 const Screen: React.FC = () => {
@@ -83,7 +83,7 @@ const Screen: React.FC = () => {
     fetchRequests();
   }, []);
 
-  const { sortedRequests, errorMsg } = useDonationRequests(donationRequests);
+  const { finalRequestWithDistance, errorMsg } = useDonationRequests(donationRequests);
 
   return (
     <SafeAreaProvider>
@@ -137,7 +137,7 @@ const Screen: React.FC = () => {
         {loading ? (
           <Loader message="Fetching donation requests..." />
         ) : (
-          <DonationRequestsList sortedRequests={sortedRequests} errorMsg={errorMsg} />
+          <DonationRequestsList sortedRequests={finalRequestWithDistance} errorMsg={errorMsg} />
         )}
       </SafeAreaView>
     </SafeAreaProvider>

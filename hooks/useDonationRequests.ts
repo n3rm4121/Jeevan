@@ -6,7 +6,7 @@ type LocationCoords = { latitude: number; longitude: number } | null;
 
 export const useDonationRequests = (donationRequests: DonationRequest[]) => {
     const [userLocation, setUserLocation] = useState<LocationCoords>(null);
-    const [sortedRequests, setSortedRequests] = useState<DonationRequest[]>([]);
+    const [finalRequestWithDistance, setFinalRequestWithDistance] = useState<DonationRequest[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -54,11 +54,11 @@ export const useDonationRequests = (donationRequests: DonationRequest[]) => {
                     ),
                 }))
                 .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
-            setSortedRequests(sorted);
+            setFinalRequestWithDistance(sorted);
             setLoading(false);
         }
     }, [userLocation, donationRequests]);
 
     // console.log(sortedRequests);
-    return { sortedRequests, loading, errorMsg, userLocation };
+    return { finalRequestWithDistance, loading, errorMsg, userLocation };
 };
