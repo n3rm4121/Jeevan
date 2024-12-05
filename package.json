@@ -13,7 +13,7 @@
     "postinstall": "npx tailwindcss -i ./global.css -o ./node_modules/.cache/nativewind/global.css"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-navigation/native": "^7.0.0",
     "@rn-primitives/avatar": "~1.1.0",
@@ -26,6 +26,7 @@
     "clsx": "^2.1.0",
     "expo": "^52.0.7",
     "expo-linking": "~7.0.2",
+    "expo-location": "~18.0.3",
     "expo-navigation-bar": "~4.0.3",
     "expo-router": "~4.0.5",
     "expo-splash-screen": "~0.29.10",
@@ -50,14 +51,14 @@
     "tailwind-rn": "^4.2.0",
     "tailwindcss": "3.3.5",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^4.4.7",
-    "expo-location": "~18.0.3"
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@types/react": "~18.3.12",
     "@types/react-native-vector-icons": "^6.4.18",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@react-native-community/cli": "latest"
   },
   "private": true
 }
