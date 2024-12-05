@@ -1,28 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-// Optionally import the services that you want to use
-import { getAuth } from "firebase/auth";
-// import {...} from "firebase/database";
-// import {...} from "firebase/firestore";
-// import {...} from "firebase/functions";
-// import {...} from "firebase/storage";
+import { getAuth } from 'firebase/auth';
 
-// Initialize Firebase
 const firebaseConfig = {
     apiKey: 'AIzaSyDon_DN6B0oUgm2XN32aeOtRPpIZW-O-Mg',
     authDomain: 'project-id.firebaseapp.com',
     databaseURL: 'https://project-id.firebaseio.com',
     projectId: 'blood-44832',
     storageBucket: 'blood-44832.firebasestorage.app',
-    // messagingSenderId: 'sender-id',
     appId: '1:958764173154:android:85663462fba4998577ce3b',
-    // measurementId: 'G-measurement-id',
 };
 
 export const app = initializeApp(firebaseConfig);
-// For more information on how to access Firebase in your project,
-// see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
-
-const auth = getAuth(app);
-
+export const auth = getAuth(app);  
 export const db = getFirestore(app);

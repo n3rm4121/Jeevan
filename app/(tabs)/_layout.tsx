@@ -19,18 +19,11 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }) => <FontAwesome size={28} name="heart" color={color} />,
                 }}
             />
-            {/* <Tabs.Screen
-                name="need"
-                options={{
-                    title: 'Submit Requests',
-                    tabBarIcon: ({ color }) => <MaterialIcons name='water-drop' size={28} color={color} />,
-                }}
-            /> */}
             <Tabs.Screen
-                name="profile"
+                name="campaigns"
                 options={{
-                    title: 'Profile',
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,
+                    title: 'Campaigns',
+                    tabBarIcon: ({ color }) => <MaterialIcons size={32} name="campaign" color={color} />,
                 }}
             />
         </Tabs>
