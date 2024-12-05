@@ -5,11 +5,10 @@ import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, Image, StyleSheet } from 'react-native';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
-import { ThemeToggle } from '~/components/ThemeToggle';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 
 const LIGHT_THEME: Theme = {
@@ -21,56 +20,68 @@ const DARK_THEME: Theme = {
   colors: NAV_THEME.dark,
 };
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
-  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+  const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
     (async () => {
       const theme = await AsyncStorage.getItem('theme');
       if (Platform.OS === 'web') {
-        // Adds the background color to the html element to prevent white background on overscroll.
         document.documentElement.classList.add('bg-background');
       }
       if (!theme) {
-        AsyncStorage.setItem('theme', colorScheme);
-        setIsColorSchemeLoaded(true);
-        return;
-      }
-      const colorTheme = theme === 'dark' ? 'dark' : 'light';
-      if (colorTheme !== colorScheme) {
+        await AsyncStorage.setItem('theme', colorScheme);
+      } else {
+        const colorTheme = theme === 'dark' ? 'dark' : 'light';
         setColorScheme(colorTheme);
         setAndroidNavigationBar(colorTheme);
-        setIsColorSchemeLoaded(true);
-        return;
       }
-      setAndroidNavigationBar(colorTheme);
-      setIsColorSchemeLoaded(true);
-    })().finally(() => {
-      SplashScreen.hideAsync();
-    });
+
+      setTimeout(() => {
+        setIsReady(true);
+        SplashScreen.hideAsync();
+      }, 5000);
+    })();
   }, []);
 
-  if (!isColorSchemeLoaded) {
-    return null;
+  if (!isReady) {
+    return (
+      <View style={styles.splashContainer}>
+        <Image
+          source={{
+            uri: 'https://scontent.fpkr1-1.fna.fbcdn.net/v/t1.15752-9/462636498_492075943264492_3530150559607643032_n.png?_nc_cat=110&ccb=1-7&_nc_sid=9f807c&_nc_ohc=v_xOzhBJ8gYQ7kNvgGtVG5h&_nc_zt=23&_nc_ht=scontent.fpkr1-1.fna&oh=03_Q7cD1QFyUAc020GAs8JeKAW2Av0FBy_X5Cypm0JPnSlucPOWaQ&oe=67797FB0',
+          }}
+          style={styles.splashImage}
+        />
+      </View>
+    );
   }
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false, }} />
-
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
       <PortalHost />
     </ThemeProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  splashContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  splashImage: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+  },
+});

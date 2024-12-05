@@ -11,7 +11,7 @@ import { db } from '~/utils/firebaseConfig';
 import DonationRequest from '~/app/types/DonationRequest';
 import BloodDonationModal from '~/components/InstructionModal';
 import NeedFormModal from '~/components/NeedFormModal';
-import Carousel from 'react-native-reanimated-carousel'; // Importing the new carousel
+import Carousel from 'react-native-reanimated-carousel'; 
 import { Campaigns } from './campaigns';
 
 const Screen: React.FC = () => {
