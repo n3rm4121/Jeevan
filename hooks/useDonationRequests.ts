@@ -1,19 +1,8 @@
 import { useState, useEffect } from 'react';
+import DonationRequest from '~/app/types/DonationRequest';
 import { getUserLocation } from '~/utils/getUserLocation';
 
 type LocationCoords = { latitude: number; longitude: number } | null;
-interface DonationRequest {
-    id: string;
-    name: string;
-    hospital: string;
-    bloodGroup: string;
-    pint: string;
-    required_by: Date;
-    location: {
-        latitude: number;
-        longitude: number;
-    };
-}
 
 export const useDonationRequests = (donationRequests: DonationRequest[]) => {
     const [userLocation, setUserLocation] = useState<LocationCoords>(null);

@@ -18,7 +18,7 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { app } from '~/utils/firebaseConfig';
 import { getUserLocation } from '~/utils/getUserLocation';
 
-export default function NeedFormModal({ isOpen, onClose }: { isOpen: () => void, onClose: () => void }) {
+export default function NeedFormModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const [selectedPint, setSelectedPint] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);

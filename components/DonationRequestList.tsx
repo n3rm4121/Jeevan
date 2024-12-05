@@ -31,12 +31,14 @@ const DonationRequestsList: React.FC<DonationRequestsListProps> = ({ sortedReque
                     <HospitalCard
                         avatar="https://i.pravatar.cc/300"
                         name={item.patientName}
-                        address={item.hospital}
-                        phone={`Required by: ${item.required_by}`}
+                        hospital={item.hospital}
+                        phone={`Required by: ${item.requiredBy}`}
                         bloodType={item.bloodGroup}
                         distance={`${item.distance?.toFixed(2)} km`}
                         isUrgent={item?.isUrgent || false}
                         phoneNumber={item.phoneNumber}
+                        requiredBy={item.requiredBy}
+                        patientName={item.patientName}
                     />
                 )}
             />

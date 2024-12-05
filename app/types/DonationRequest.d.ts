@@ -1,10 +1,9 @@
 export default interface DonationRequest {
     id: string;
-    name: string;
     hospital: string;
     bloodGroup: string;
     pint: string;
-    required_by: Date;
+    requiredBy: Date;
     location: {
         latitude: number;
         longitude: number;

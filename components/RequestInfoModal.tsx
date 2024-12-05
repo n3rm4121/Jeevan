@@ -6,13 +6,12 @@ interface RequestInfoModalProps {
     visible: boolean;
     onClose: () => void;
     avatar: string;
-    name: string;
-    address: string;
+    hospital: string;
     phoneNumber: string;
     bloodType: string;
     distance: string;
     patientName: string;
-    requiredBy: string;
+    requiredBy: Date;
 }
 
 const { width } = Dimensions.get('window');
@@ -21,8 +20,7 @@ const RequestInfoModal: React.FC<RequestInfoModalProps> = ({
     visible,
     onClose,
     avatar,
-    name,
-    address,
+    hospital,
     phoneNumber,
     bloodType,
     distance,
@@ -45,10 +43,11 @@ const RequestInfoModal: React.FC<RequestInfoModalProps> = ({
                     <View style={styles.modalHeader}>
                         <Image source={{ uri: avatar }} style={styles.avatar} />
                         <View style={styles.headerText}>
-                            <Text style={styles.hospitalName}>{name}</Text>
-                            <Text style={styles.hospitalAddress}>{address}</Text>
-                            <Text style={styles.patientName}>Patient: {patientName}</Text>
-                            <Text style={styles.requiredBy}>Needed by: {requiredBy}</Text>
+                            <Text style={styles.patientName}>Patient Name: {patientName}</Text>
+                            <Text style={styles.hospitalAddress}>Hospital: {hospital}</Text>
+                            <Text style={styles.requiredBy}>
+                                Required by: {new Date(requiredBy).toDateString()}
+                            </Text>
                         </View>
                     </View>
 

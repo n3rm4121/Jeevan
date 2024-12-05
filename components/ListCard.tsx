@@ -6,20 +6,20 @@ import RequestInfoModal from './RequestInfoModal';  // Import the modal
 interface ListCardProps {
     avatar: string;
     name: string;
-    address: string;
+    hospital: string;
     phone: string;
     bloodType: string;
     distance: string;
     isUrgent?: boolean;
     phoneNumber: string;
     patientName: string;
-    requiredBy: string;
+    requiredBy: Date;
 }
 
 const HospitalCard: React.FC<ListCardProps> = ({
     avatar,
     name,
-    address,
+    hospital,
     phone,
     bloodType,
     distance,
@@ -52,10 +52,10 @@ const HospitalCard: React.FC<ListCardProps> = ({
 
                         {/* Hospital Info */}
                         <View>
-                            <Text style={styles.hospitalName}>{name}</Text>
+                            <Text style={styles.hospitalName}>{hospital}</Text>
                             <View style={styles.infoRow}>
                                 <MaterialIcons name="location-on" size={16} color="gray" />
-                                <Text style={styles.infoText}>{address}</Text>
+                                <Text style={styles.infoText}>{hospital}</Text>
                             </View>
                             <View style={styles.infoRow}>
                                 <FontAwesome name="phone" size={16} color="gray" />
@@ -81,8 +81,7 @@ const HospitalCard: React.FC<ListCardProps> = ({
                 visible={isModalVisible}
                 onClose={handleCloseModal}
                 avatar={avatar}
-                name={name}
-                address={address}
+                hospital={hospital}
                 phoneNumber={phoneNumber}
                 bloodType={bloodType}
                 distance={distance}

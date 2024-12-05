@@ -55,22 +55,23 @@ const Screen: React.FC = () => {
         const querySnapshot = await getDocs(collection(db, 'donationRequests'));
         const requests = querySnapshot.docs.map((doc) => {
           const data = doc.data();
+          console.log(data);
           return {
             id: doc.id,
-            name: data.name,
+            patientName: data.patientName,
             hospital: data.hospital,
             bloodGroup: data.bloodGroup,
             pint: data.pint,
-            required_by: data.required_by,
+            requiredBy: data.requiredBy,
             location: {
               latitude: data.location.latitude,
               longitude: data.location.longitude,
             },
             phoneNumber: data.phoneNumber,
-            patientName: data.patientName,
           };
         });
         setDonationRequests(requests);
+        console.log('Donation requests:', requests);
       } catch (err) {
         console.error('Error fetching donation requests:', err);
         setError('Failed to fetch donation requests.');
