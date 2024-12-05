@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "958764173154",
+    "project_id": "blood-44832",
+    "storage_bucket": "blood-44832.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958764173154:android:85663462fba4998577ce3b",
+        "android_client_info": {
+          "package_name": "com.reactnativefirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDon_DN6B0oUgm2XN32aeOtRPpIZW-O-Mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
