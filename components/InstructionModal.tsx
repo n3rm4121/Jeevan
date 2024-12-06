@@ -52,7 +52,41 @@ const BloodDonationModal: React.FC<BloodDonationModalProps> = ({ isOpen, onClose
                                 <Text style={styles.tableCell}>All blood types</Text>
                                 <Text style={styles.tableCell}>O-</Text>
                             </View>
-                            {/* Add more rows as needed */}
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>O+</Text>
+                                <Text style={styles.tableCell}>O+, A+, B+, AB+</Text>
+                                <Text style={styles.tableCell}>O+, O-</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>A-</Text>
+                                <Text style={styles.tableCell}>A+, A-, AB+, AB-</Text>
+                                <Text style={styles.tableCell}>A-, O-</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>A+</Text>
+                                <Text style={styles.tableCell}>A+, AB+</Text>
+                                <Text style={styles.tableCell}>A+, A-, O+, O-</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>B-</Text>
+                                <Text style={styles.tableCell}>B+, B-, AB+, AB-</Text>
+                                <Text style={styles.tableCell}>B-, O-</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>B+</Text>
+                                <Text style={styles.tableCell}>B+, AB+</Text>
+                                <Text style={styles.tableCell}>B+, B-, O+, O-</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>AB-</Text>
+                                <Text style={styles.tableCell}>AB+, AB-</Text>
+                                <Text style={styles.tableCell}>AB-, A-, B-, O-</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={styles.tableCell}>AB+</Text>
+                                <Text style={styles.tableCell}>AB+</Text>
+                                <Text style={styles.tableCell}>All blood types</Text>
+                            </View>
                         </View>
                     </ScrollView>
                 </View>
