@@ -90,7 +90,7 @@ export default function NeedFormModal({ isOpen, onClose }: { isOpen: boolean, on
 
   const handlePhoneChange = (text: string) => {
     const formatted = text.replace(/[^0-9]/g, '');
-    if (formatted.length <= 7) {
+    if (formatted.length <= 10) {
       setPhoneNumber(formatted);
     }
   };
