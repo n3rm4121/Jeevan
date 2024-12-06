@@ -52,7 +52,7 @@ const HospitalCard: React.FC<ListCardProps> = ({
 
                         {/* Hospital Info */}
                         <View>
-                            <Text style={styles.hospitalName}>{hospital}</Text>
+                            <Text style={styles.hospitalName}>{patientName}</Text>
                             <View style={styles.infoRow}>
                                 <MaterialIcons name="location-on" size={16} color="gray" />
                                 <Text style={styles.infoText}>{hospital}</Text>
