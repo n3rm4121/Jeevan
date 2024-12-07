@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
+// below secrets are not real, replace them with your own ;)
 const firebaseConfig = {
     apiKey: 'AIzaSyDon_DN6B0oUgm2XN32aeOtRPpIZW-O-Mg',
     authDomain: 'project-id.firebaseapp.com',
@@ -12,5 +13,5 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);  
+export const auth = getAuth(app);
 export const db = getFirestore(app);

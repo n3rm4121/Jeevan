@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import RequestInfoModal from './RequestInfoModal';  // Import the modal
-
+import RequestInfoModal from './RequestInfoModal';
 interface ListCardProps {
     avatar: string;
     name: string;
@@ -31,11 +30,11 @@ const HospitalCard: React.FC<ListCardProps> = ({
     const [isModalVisible, setModalVisible] = useState(false);
 
     const handleCardPress = () => {
-        setModalVisible(true);  // Open the modal when the card is pressed
+        setModalVisible(true);
     };
 
     const handleCloseModal = () => {
-        setModalVisible(false);  // Close the modal
+        setModalVisible(false);
     };
 
     return (

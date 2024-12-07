@@ -21,7 +21,6 @@ const Screen: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalInstruction, setModalInstruction] = useState(false);
 
-
   // Carousel data for campaigns
   const test = [
     {
@@ -47,7 +46,6 @@ const Screen: React.FC = () => {
   const campaigns = [...Campaigns, ...test];
 
   const { width } = Dimensions.get('window'); // Get window width for carousel
-
   useEffect(() => {
     const fetchRequests = async () => {
       setLoading(true);
@@ -88,15 +86,13 @@ const Screen: React.FC = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-
-        {/* Carousel for Campaigns */}
         <View style={styles.carouselContainer}>
           <Carousel
             loop
-            width={width} // Set carousel width
-            height={600} // Set carousel height
-            autoPlay={true} // Auto play carousel
-            scrollAnimationDuration={500} // Animation speed
+            width={width}
+            height={600}
+            autoPlay={true}
+            scrollAnimationDuration={500}
             data={campaigns}
             renderItem={({ item }) => (
               <View style={styles.carouselItem}>
@@ -108,11 +104,10 @@ const Screen: React.FC = () => {
           />
         </View>
 
-        {/* Buttons */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => setModalVisible(true)} // Open modal on button click
+            onPress={() => setModalVisible(true)}
           >
             <Feather name="edit" size={24} color="white" />
             <Text style={styles.buttonText}>Request</Text>
@@ -125,7 +120,6 @@ const Screen: React.FC = () => {
           <NeedFormModal isOpen={isModalVisible} onClose={() => setModalVisible(false)} />
         </View>
 
-        {/* Section Title */}
         <View style={styles.sectionTitleContainer}>
           <Text style={styles.sectionTitle}>NearBy Requests</Text>
           <Link href="/donate" style={styles.viewAllLink}>View all
@@ -133,7 +127,6 @@ const Screen: React.FC = () => {
           </Link>
         </View>
 
-        {/* Donation Requests List */}
         {loading ? (
           <Loader message="Fetching donation requests..." />
         ) : (
@@ -151,8 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f4f6',
   },
   carouselContainer: {
-    paddingTop: 16, // Space above carousel
-    marginBottom: '70%', // Space between carousel and other content
+    paddingTop: 16,
+    marginBottom: '70%',
   },
   carouselItem: {
     backgroundColor: '#ffffff',
@@ -183,7 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 20,
-    marginBottom: 0, // Adding space below the buttons
+    marginBottom: 0,
   },
   button: {
     backgroundColor: '#ef4444',
@@ -192,8 +185,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1, // Ensures the buttons stretch evenly
-    marginHorizontal: 8, // Adds spacing between buttons
+    flex: 1,
+    marginHorizontal: 8,
   },
   buttonText: {
     color: '#ffffff',
