@@ -1,16 +1,3 @@
-# Starter base
-
-A starting point to help you set up your project quickly and use the common components provided by `react-native-reusables`. The idea is to make it easier for you to get started.
-
-## Features
-
-- NativeWind v4
-- Dark and light mode
-    - Android Navigation Bar matches mode
-    - Persistant mode
-- Common components
-    - ThemeToggle, Avatar, Button, Card, Progress, Text, Tooltip
-
-<img src="https://github.com/mrzachnugent/react-native-reusables/assets/63797719/42c94108-38a7-498b-9c70-18640420f1bc"
-     alt="starter-base-template"
-     style="width:270px;" />
+![1](https://github.com/user-attachments/assets/4f9bb5a0-2878-4774-b3fe-bf3322c1d7c4)
+![2](https://github.com/user-attachments/assets/1c08353a-2f87-49f4-bd82-dcf9cabe44d0)
+![3](https://github.com/user-attachments/assets/28dff266-fb3e-459f-be1b-a7542bdd7db6)
