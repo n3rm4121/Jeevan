@@ -22,10 +22,10 @@ Jeevan is a mobile application designed to connect blood donors with recipients.
 ## Features
 
 - User registration and authentication
-- Search for blood donors based on nearby location
+- Search for blood requests based on nearby location
 - Request blood donations
-- Notification system for urgent blood requests
-- User profile management
+- Instructions for blood Donations
+- Nearby Donation Campaigns
 
 **Screenshots:**
 
